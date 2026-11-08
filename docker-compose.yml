@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GNANI_API_KEY=${GNANI_API_KEY:-your_gnani_api_key_here}
+      - GNANI_BASE_URL=https://api.vachana.ai
+      - GNANI_STT_MODEL=prisma-v2.5
+      - GNANI_TTS_MODEL=timbre-v2.5
+      - GNANI_REASONING_MODEL=evon-v3.3
+      - GNANI_LANGUAGE_CODE=indic-auto
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - PORT=8000
+      - HOST=0.0.0.0
+    volumes:
+      - classtrace_storage:/app/backend/storage
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  classtrace_storage:
+

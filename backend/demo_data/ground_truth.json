@@ -1,0 +1,207 @@
+{
+  "lecture_meta": {
+    "title": "DSA Lecture 14: Recursion, Call Stack & Binary Tree Inorder Traversal",
+    "topic": "Data Structures & Algorithms",
+    "language": "Hinglish (Hindi + English)",
+    "duration_seconds": 308.0,
+    "instructor": "Prof. Sharma",
+    "filename": "dsa_recursion_trees_lecture.wav"
+  },
+  "segments": [
+    {
+      "id": "seg_001",
+      "start_time": 0.0,
+      "end_time": 32.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Hello everyone, welcome back to DSA class. Aaj ka hamara topic hai Recursion and Binary Tree Traversals. Sabse pehle samajhte hain: Recursion kya hota hai? Jab ek function khud ko bar-bar call karta hai to solve a smaller instance of the same problem, us programming technique ko hum recursion kehte hain. Basically, hum ek bade complex problem ko chhote identical sub-problems me divide kar dete hain."
+    },
+    {
+      "id": "seg_002",
+      "start_time": 32.0,
+      "end_time": 65.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Ab sabse zaroori concept hai: Base Case ya Base Condition. Dhyan se suniye students, bina base condition ke recursion kabhi complete nahi ho sakta. Base case wo terminating condition hoti hai jahan recursion stop hota hai aur function simple value return karta hai without making further recursive calls. Jaise factorial me agar n equals 0 ya 1 hai, toh hum seedha return 1 karte hain."
+    },
+    {
+      "id": "seg_003",
+      "start_time": 65.0,
+      "end_time": 102.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Ab internal execution dekhte hain: Call Stack behavior. Jab bhi koi recursive call hoti hai, computer memory me ek naya Activation Record ya Stack Frame push hota hai. Is frame me local variables, parameters aur return address store hota hai. Jab base case hit hota hai, toh function execute hokar return karta hai, aur stack frame pop hona shuru ho jata hai in LIFO order—Last In First Out."
+    },
+    {
+      "id": "seg_004",
+      "start_time": 102.0,
+      "end_time": 140.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Lekin agar aapne base condition galat likh di ya bhool gaye, toh kya hoga? Infinite recursion trigger ho jayega. Stack par continuously naye frames push hote rahenge, memory limit cross ho jayegi, aur runtime par fatal Stack Overflow Error throw ho jayega. Isliye code likhte waqt hamesha pehle verify karo ki base case reachable hai ya nahi."
+    },
+    {
+      "id": "seg_005",
+      "start_time": 140.0,
+      "end_time": 180.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Chaliye ab chalte hain hamare agle topic par: Binary Trees. Binary tree ek non-linear hierarchical data structure hai. Har node ke pass maximum do children ho sakte hain: ek Left Child aur ek Right Child. Sabse top node ko hum Root Node bolte hain. Aur jin nodes ke koi child nahi hote, matlab jinka left aur right pointer null hota hai, unhe hum Leaf Nodes kehte hain."
+    },
+    {
+      "id": "seg_006",
+      "start_time": 180.0,
+      "end_time": 225.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Tree traversal ka matlab hota hai har ek node ko exactly ek baar visit karna. Aaj hum Inorder Traversal discuss karenge. Inorder traversal ka standard rule yaad kar lijiye: Left Subtree, then Root node, then Right Subtree. Yani sabse pehle recursively pure left subtree ko traverse karenge, fir current root node ko process karenge, aur last me right subtree me jayenge. Shortcut yaad rakho: L-Root-R."
+    },
+    {
+      "id": "seg_007",
+      "start_time": 225.0,
+      "end_time": 270.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Isko code me kaise implement karenge? Code bohot clean hai: function inorder(node) { if (node == null) return; inorder(node.left); print(node.val); inorder(node.right); }. Yahan base case hai jab node null ho jaye. Pehle left subtree ke liye recursive call jayegi, fir current value print hogi, fir right subtree ke liye recursive call jayegi."
+    },
+    {
+      "id": "seg_008",
+      "start_time": 270.0,
+      "end_time": 308.0,
+      "speaker": "Prof. Sharma",
+      "transcript": "Inorder traversal ki ek bohot powerful property hai jo interviews me baar-baar puchi jaati hai: agar aap ek Binary Search Tree yaani BST ka inorder traversal nikalte ho, toh nodes ka output hamesha strictly ascending sorted order me aata hai! Toh aaj humne recursion, base condition, call stack, binary tree aur inorder traversal complete kiya. Practice the questions on your portal. Thank you!"
+    }
+  ],
+  "benchmark_queries": [
+    {
+      "id": "q01",
+      "question": "Sir ne recursion ka base case kaise explain kiya tha?",
+      "expected_timestamp_start": 32.0,
+      "expected_timestamp_end": 65.0,
+      "topic": "Base Condition",
+      "description": "Student asking in Hinglish about how teacher explained the recursive base case."
+    },
+    {
+      "id": "q02",
+      "question": "Why does a recursive function need a terminating condition?",
+      "expected_timestamp_start": 32.0,
+      "expected_timestamp_end": 65.0,
+      "topic": "Base Condition",
+      "description": "Student asking in English why base condition is required in recursion."
+    },
+    {
+      "id": "q03",
+      "question": "Call stack pe activation records kaise push aur pop hote hain?",
+      "expected_timestamp_start": 65.0,
+      "expected_timestamp_end": 102.0,
+      "topic": "Call Stack Behavior",
+      "description": "Student asking in Hinglish about push and pop of activation records on call stack."
+    },
+    {
+      "id": "q04",
+      "question": "How does memory allocate stack frames during recursive execution?",
+      "expected_timestamp_start": 65.0,
+      "expected_timestamp_end": 102.0,
+      "topic": "Call Stack Behavior",
+      "description": "Student asking in English about stack frames and memory allocation during recursion."
+    },
+    {
+      "id": "q05",
+      "question": "Stack overflow error kab aur kyu aati hai lecture me?",
+      "expected_timestamp_start": 102.0,
+      "expected_timestamp_end": 140.0,
+      "topic": "Stack Overflow",
+      "description": "Student asking in Hinglish when and why stack overflow error occurs."
+    },
+    {
+      "id": "q06",
+      "question": "What happens if we forget to write a base condition in recursion?",
+      "expected_timestamp_start": 102.0,
+      "expected_timestamp_end": 140.0,
+      "topic": "Infinite Recursion",
+      "description": "Student asking in English what happens when base case is missing."
+    },
+    {
+      "id": "q07",
+      "question": "Binary tree ka basic structure aur root node kya hota hai?",
+      "expected_timestamp_start": 140.0,
+      "expected_timestamp_end": 180.0,
+      "topic": "Binary Tree Structure",
+      "description": "Student asking in Hinglish about binary tree definition and root node."
+    },
+    {
+      "id": "q08",
+      "question": "What is a leaf node in a binary tree?",
+      "expected_timestamp_start": 140.0,
+      "expected_timestamp_end": 180.0,
+      "topic": "Leaf Node",
+      "description": "Student asking in English about leaf node definition."
+    },
+    {
+      "id": "q09",
+      "question": "Inorder traversal ka order kya hota hai? Left root right?",
+      "expected_timestamp_start": 180.0,
+      "expected_timestamp_end": 225.0,
+      "topic": "Inorder Traversal",
+      "description": "Student asking in Hinglish about the order of visiting nodes in inorder traversal."
+    },
+    {
+      "id": "q10",
+      "question": "Explain the sequence of visiting nodes during inorder tree traversal.",
+      "expected_timestamp_start": 180.0,
+      "expected_timestamp_end": 225.0,
+      "topic": "Inorder Traversal",
+      "description": "Student asking in English about the traversal sequence in inorder."
+    },
+    {
+      "id": "q11",
+      "question": "Inorder traversal ko code me recursively kaise likhte hain?",
+      "expected_timestamp_start": 225.0,
+      "expected_timestamp_end": 270.0,
+      "topic": "Traversal Code Walkthrough",
+      "description": "Student asking in Hinglish about recursive code implementation of inorder traversal."
+    },
+    {
+      "id": "q12",
+      "question": "Show the recursive code implementation for tree inorder traversal.",
+      "expected_timestamp_start": 225.0,
+      "expected_timestamp_end": 270.0,
+      "topic": "Traversal Code Walkthrough",
+      "description": "Student asking in English for the code walkthrough of tree traversal."
+    },
+    {
+      "id": "q13",
+      "question": "Binary search tree par inorder traversal run karne se kya sorted order milta hai?",
+      "expected_timestamp_start": 270.0,
+      "expected_timestamp_end": 308.0,
+      "topic": "BST Sorted Property",
+      "description": "Student asking in Hinglish about BST property giving sorted ascending order."
+    },
+    {
+      "id": "q14",
+      "question": "Why does BST inorder traversal print elements in ascending order?",
+      "expected_timestamp_start": 270.0,
+      "expected_timestamp_end": 308.0,
+      "topic": "BST Sorted Property",
+      "description": "Student asking in English why BST inorder yields sorted ascending output."
+    },
+    {
+      "id": "q15",
+      "question": "Recursion ki basic definition teacher ne shuruat me kya batayi?",
+      "expected_timestamp_start": 0.0,
+      "expected_timestamp_end": 32.0,
+      "topic": "Recursion Definition",
+      "description": "Student asking in Hinglish what the teacher defined recursion as at the start."
+    },
+    {
+      "id": "q16",
+      "question": "Divide a bigger problem into identical subproblems technique",
+      "expected_timestamp_start": 0.0,
+      "expected_timestamp_end": 32.0,
+      "topic": "Recursion Definition",
+      "description": "Student asking in English about breaking a big problem into subproblems."
+    },
+    {
+      "id": "q17_negative",
+      "question": "Dynamic programming memoization table and bottom-up grid fill approach",
+      "expected_timestamp_start": -1.0,
+      "expected_timestamp_end": -1.0,
+      "topic": "Negative Control (Out of Syllabus)",
+      "description": "Negative control query to verify that out-of-syllabus topics correctly trigger no-result state."
+    }
+  ]
+}
+

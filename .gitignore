@@ -1,0 +1,74 @@
+# =============================================================================
+# ClassTrace Root .gitignore
+# Production Safety & Git Sanitization
+# =============================================================================
+
+# 1. Environment variables & Secrets
+.env
+.env.*
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+frontend/.env.local
+frontend/.env*.local
+
+# Whitelist safe configuration templates
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# 2. Node & Next.js build outputs
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+frontend/out/
+frontend/build/
+*.tsbuildinfo
+frontend/*.tsbuildinfo
+next-env.d.ts
+frontend/next-env.d.ts
+
+# 3. Python virtual environments, bytecode & test caches
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+backend/**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+backend/.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# 4. Database storage & runtime artifacts
+*.db
+*.sqlite
+*.sqlite3
+backend/storage/*
+!backend/storage/.gitkeep
+!backend/storage/audio/
+backend/storage/audio/*
+!backend/storage/audio/.gitkeep
+backend/demo_data/temp_segments/
+
+# 5. OS & Editor metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 6. Local Agent / IDE extensions & cache
+.agents/
+skills-lock.json
