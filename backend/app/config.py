@@ -6,7 +6,7 @@ Manages environment variables, API endpoints, storage paths, and service configu
 import os
 from pathlib import Path
 from typing import List
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Base directories
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -68,10 +68,11 @@ class Settings(BaseSettings):
         "http://127.0.0.1:8000",
     ]
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        extra = "ignore"
+    model_config = SettingsConfigDict(
+        env_file=(BASE_DIR / ".env", ".env"),
+        env_file_encoding="utf-8",
+        extra="ignore"
+    )
 
     @property
     def is_gnani_configured(self) -> bool:
