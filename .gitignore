@@ -72,3 +72,4 @@ ehthumbs.db
 # 6. Local Agent / IDE extensions & cache
 .agents/
 skills-lock.json
+brag-output/

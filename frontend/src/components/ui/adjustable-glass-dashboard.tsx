@@ -606,7 +606,7 @@ export default function GlassWorkspace({
         }
       }}
     >
-      <style>{styles}</style>
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
       {backgroundImage && !backgroundFailed && (
         <img
           className="gw-room"

@@ -91,15 +91,7 @@ function DashboardContent() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Crystal Clear Glass settings
-  const [glass, setGlass] = useState<GlassSettings>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem(GLASS_SETTINGS_KEY);
-        if (saved) return JSON.parse(saved);
-      } catch {}
-    }
-    return DEFAULT_GLASS;
-  });
+  const [glass, setGlass] = useState<GlassSettings>(DEFAULT_GLASS);
   const [isAdjustGlassOpen, setIsAdjustGlassOpen] = useState(false);
 
   // Modals
@@ -146,13 +138,19 @@ function DashboardContent() {
     { scope: mainRef, dependencies: [selectedLecture?.id] }
   );
 
-  // Load Bookmarks and Sidebar preference from localStorage on mount
+  // Load Bookmarks, Glass settings, and Sidebar preference from localStorage on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) setBookmarks(JSON.parse(saved));
+      const savedGlass = localStorage.getItem(GLASS_SETTINGS_KEY);
+      if (savedGlass) setGlass(JSON.parse(savedGlass));
       const savedCollapse = localStorage.getItem(SIDEBAR_COLLAPSE_KEY);
-      if (savedCollapse) setIsSidebarCollapsed(savedCollapse === 'true');
+      if (savedCollapse !== null) {
+        setIsSidebarCollapsed(savedCollapse === 'true');
+      } else if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        setIsSidebarCollapsed(true);
+      }
     } catch (e) {
       console.error('Failed to load storage prefs:', e);
     }
@@ -377,7 +375,7 @@ function DashboardContent() {
         } as React.CSSProperties
       }
     >
-      <style>{CRYSTAL_GLASS_STYLES}</style>
+      <style dangerouslySetInnerHTML={{ __html: CRYSTAL_GLASS_STYLES }} />
 
       {/* Crystal Glass Ambient Depth Overlay */}
       <div className="gw-room-shade fixed inset-0 z-0 bg-[#030407]/40 backdrop-blur-[1px] pointer-events-none" aria-hidden="true" />
@@ -404,7 +402,7 @@ function DashboardContent() {
         {/* Workspace Body */}
         <div className="workspace-shell flex-1 flex flex-col lg:flex-row max-w-7xl w-full mx-auto overflow-hidden min-h-0 relative border-x border-white/[0.06]">
           {/* Left Sidebar: Lecture Navigation */}
-          <div className="gw-sidebar-wrap shrink-0 border-r border-white/[0.08]">
+          <div className="gw-sidebar-wrap shrink-0 lg:border-r border-white/[0.08]">
             <LectureSidebar
               lectures={lectures}
               selectedLectureId={selectedLecture?.id || null}
@@ -426,9 +424,9 @@ function DashboardContent() {
             {isLectureLoading ? (
               <div className="ct-skeleton h-24 rounded-2xl w-full" />
             ) : selectedLecture ? (
-              <div className="gw-panel gw-reveal p-4 sm:p-5 rounded-2xl shadow-sm">
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="space-y-1.5 min-w-0 max-w-2xl">
+              <div className="gw-panel gw-reveal p-3.5 sm:p-5 rounded-2xl shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+                  <div className="space-y-1.5 min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold text-white bg-white/[0.08] border border-white/[0.15] flex items-center gap-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
                         <span className="size-1.5 rounded-full bg-white animate-pulse" />
@@ -440,11 +438,11 @@ function DashboardContent() {
                       </span>
                     </div>
 
-                    <h1 className="text-base sm:text-xl font-bold tracking-tight text-white truncate font-sans">
+                    <h1 className="text-sm sm:text-lg lg:text-xl font-bold tracking-tight text-white leading-snug break-words font-sans">
                       {selectedLecture.title}
                     </h1>
 
-                    <p className="text-xs text-[#94A3B8] font-mono flex items-center gap-3">
+                    <p className="text-xs text-[#94A3B8] font-mono flex flex-wrap items-center gap-3">
                       <span className="flex items-center gap-1">
                         <Clock className="size-3 text-white/80" />
                         Duration: <strong className="text-white">{formatTime(selectedLecture.duration_seconds)}</strong>
@@ -457,11 +455,11 @@ function DashboardContent() {
                   </div>
 
                   {/* Quick Action Header Buttons */}
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
                     <button
                       type="button"
                       onClick={() => handlePlayTimestamp(0)}
-                      className="btn-press flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/[0.15] text-xs font-semibold transition-colors shadow-sm"
+                      className="btn-press flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/[0.15] text-xs font-semibold transition-colors shadow-sm"
                     >
                       <Play className="size-3 fill-current text-white" />
                       <span>Play Start</span>
@@ -470,7 +468,7 @@ function DashboardContent() {
                     <button
                       type="button"
                       onClick={handleShareCurrentLecture}
-                      className="btn-press flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] text-[#94A3B8] hover:text-white border border-white/[0.1] text-xs font-medium transition-colors shadow-sm"
+                      className="btn-press flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] text-[#94A3B8] hover:text-white border border-white/[0.1] text-xs font-medium transition-colors shadow-sm"
                     >
                       {copiedLink ? <Check className="size-3 text-[#34D399]" /> : <Share2 className="size-3" />}
                       <span>{copiedLink ? 'Copied' : 'Share'}</span>

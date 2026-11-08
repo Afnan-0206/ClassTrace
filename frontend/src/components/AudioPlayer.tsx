@@ -324,7 +324,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         {/* Controls Row */}
         <div className="flex items-center justify-between gap-2 sm:gap-4 max-w-full overflow-hidden">
           {/* Left: Lecture Info & Share Deep-Link */}
-          <div className="hidden sm:flex items-center gap-2.5 min-w-0 max-w-sm">
+          <div className="hidden sm:flex items-center gap-2.5 min-w-0 max-w-sm flex-1">
             <div className="size-7 rounded-lg bg-white/[0.08] border border-white/[0.12] flex items-center justify-center text-white shrink-0">
               <Bookmark className="size-3.5" />
             </div>
@@ -349,7 +349,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           </div>
 
           {/* Center: Core Transport Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2 mx-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 justify-center flex-1 sm:flex-initial">
             {/* Previous Chapter */}
             <button
               type="button"
@@ -375,7 +375,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
               type="button"
               onClick={togglePlay}
               title="Play / Pause (Space)"
-              className="size-9 rounded-full bg-white text-black flex items-center justify-center hover:bg-slate-200 transition-colors shadow-lg"
+              className="size-9 rounded-full bg-white text-black flex items-center justify-center hover:bg-slate-200 transition-colors shadow-lg shrink-0"
             >
               {isPlaying ? <Pause className="size-4 fill-current" /> : <Play className="size-4 fill-current ml-0.5" />}
             </button>
@@ -402,7 +402,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           </div>
 
           {/* Right: Loop, Speed, Volume, Bookmark */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 justify-end flex-initial">
             {onBookmarkCurrentTime && (
               <button
                 type="button"

@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Calendar,
   Check,
+  X,
 } from 'lucide-react';
 
 interface LectureSidebarProps {
@@ -70,6 +71,13 @@ export const LectureSidebar: React.FC<LectureSidebarProps> = ({
     setActiveMenuId(null);
   };
 
+  const handleLectureClick = (id: string) => {
+    onSelectLecture(id);
+    if (typeof window !== 'undefined' && window.innerWidth < 1024 && onToggleCollapse) {
+      onToggleCollapse();
+    }
+  };
+
   // If collapsed on desktop
   if (isCollapsed) {
     return (
@@ -108,31 +116,51 @@ export const LectureSidebar: React.FC<LectureSidebarProps> = ({
   }
 
   return (
-    <aside className="lecture-rail w-full lg:w-72 shrink-0 lg:border-r border-white/[0.08] bg-black/35 backdrop-blur-2xl flex flex-col h-auto lg:h-[calc(100vh-3.5rem)] transition-all">
-      {/* Top Header: Title, Count, Collapse Toggle & Quick Search */}
-      <div className="p-3 border-b border-white/[0.08] flex flex-col gap-2.5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BookOpen className="size-4 text-white" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-white font-display">
-              Lecture Library
-            </span>
-            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-white/[0.07] text-white/80 border border-white/[0.08]">
-              {lectures.length}
-            </span>
-          </div>
+    <>
+      {/* Mobile Backdrop Overlay */}
+      <div
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-150"
+        onClick={onToggleCollapse}
+        aria-hidden="true"
+      />
 
-          {onToggleCollapse && (
-            <button
-              type="button"
-              onClick={onToggleCollapse}
-              title="Collapse sidebar"
-              className="hidden lg:flex p-1 rounded-md text-white/60 hover:text-white hover:bg-white/[0.08] transition-colors"
-            >
-              <ChevronLeft className="size-3.5" />
-            </button>
-          )}
-        </div>
+      <aside className="lecture-rail fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] bg-black/95 backdrop-blur-3xl border-r border-white/[0.08] flex flex-col h-full shadow-2xl transition-transform lg:static lg:w-72 lg:z-auto lg:h-[calc(100vh-3.5rem)] lg:shadow-none">
+        {/* Top Header: Title, Count, Collapse Toggle & Quick Search */}
+        <div className="p-3 border-b border-white/[0.08] flex flex-col gap-2.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <BookOpen className="size-4 text-white" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-white font-display">
+                Lecture Library
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-white/[0.07] text-white/80 border border-white/[0.08]">
+                {lectures.length}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              {onToggleCollapse && (
+                <>
+                  <button
+                    type="button"
+                    onClick={onToggleCollapse}
+                    title="Collapse sidebar"
+                    className="hidden lg:flex p-1 rounded-md text-white/60 hover:text-white hover:bg-white/[0.08] transition-colors"
+                  >
+                    <ChevronLeft className="size-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onToggleCollapse}
+                    title="Close library"
+                    className="lg:hidden p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/[0.08] transition-colors"
+                  >
+                    <X className="size-4" />
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
 
         {/* Live Search Filter */}
         <div className="relative">
@@ -165,7 +193,7 @@ export const LectureSidebar: React.FC<LectureSidebarProps> = ({
             return (
               <div
                 key={lec.id}
-                onClick={() => onSelectLecture(lec.id)}
+                onClick={() => handleLectureClick(lec.id)}
                 className={`group relative p-2.5 rounded-xl border cursor-pointer transition-all ${
                   isSelected
                     ? 'bg-white/[0.1] border-white/30 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]'
@@ -265,7 +293,12 @@ export const LectureSidebar: React.FC<LectureSidebarProps> = ({
         {onOpenLiveRecord && (
           <button
             type="button"
-            onClick={onOpenLiveRecord}
+            onClick={() => {
+              if (typeof window !== 'undefined' && window.innerWidth < 1024 && onToggleCollapse) {
+                onToggleCollapse();
+              }
+              onOpenLiveRecord();
+            }}
             className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold transition-colors shadow-sm"
           >
             <Radio className="size-3 text-rose-400 animate-pulse" />
@@ -274,5 +307,6 @@ export const LectureSidebar: React.FC<LectureSidebarProps> = ({
         )}
       </div>
     </aside>
+    </>
   );
 };

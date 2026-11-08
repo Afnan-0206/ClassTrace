@@ -330,23 +330,23 @@ export const VoiceSearch: React.FC<VoiceSearchProps> = ({
               onClick={handleOpenVoiceModal}
               disabled={isLoading}
               title="Ask question by voice (opens Voice Dictator)"
-              className="btn-press flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-white hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-colors shrink-0"
+              className="btn-press flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl text-white hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-colors shrink-0"
             >
               <Mic className="size-3.5 text-white animate-pulse" />
-              <span className="text-xs font-semibold">Voice</span>
+              <span className="text-xs font-semibold hidden sm:inline">Voice</span>
             </button>
 
             {/* Language Selector Popover */}
-            <div className="relative ml-1.5" ref={langMenuRef}>
+            <div className="relative ml-1 sm:ml-1.5" ref={langMenuRef}>
               <button
                 type="button"
                 onClick={() => setIsLangMenuOpen((prev) => !prev)}
-                className="btn-press flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white border border-white/[0.08] transition-colors text-xs font-medium shrink-0"
+                className="btn-press flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white border border-white/[0.08] transition-colors text-xs font-medium shrink-0"
                 title="Indic Language Selection (Auto-Detect by default)"
               >
                 <Globe className="size-3 text-white shrink-0" />
-                <span className="max-w-[85px] sm:max-w-[125px] truncate">
-                  {selectedLanguage === 'indic-auto' ? 'Auto-Detect' : activeLangObj?.name || 'Auto-Detect'}
+                <span className="max-w-[60px] sm:max-w-[125px] truncate text-[11px] sm:text-xs">
+                  {selectedLanguage === 'indic-auto' ? 'Auto' : activeLangObj?.name || 'Auto'}
                 </span>
                 <ChevronDown className="size-3 text-white/40 shrink-0" />
               </button>
@@ -444,35 +444,35 @@ export const VoiceSearch: React.FC<VoiceSearchProps> = ({
       )}
 
       {/* Suggested Questions & Auto-Detect Badge */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-white/50 pt-0.5">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[11px] text-white/50 font-medium">Try asking:</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 text-xs text-white/50 pt-0.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 max-w-full">
+          <span className="text-[11px] text-white/50 font-medium shrink-0">Try:</span>
           <button
             type="button"
             onClick={() => handleSelectSampleQuery("Sir ne recursion ka base case kaise explain kiya tha?")}
-            className="text-[11px] px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/[0.07] transition-colors"
+            className="text-[11px] px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/[0.07] transition-colors shrink-0 whitespace-nowrap"
           >
             &ldquo;Base case kaise explain kiya?&rdquo;
           </button>
           <button
             type="button"
             onClick={() => handleSelectSampleQuery("What happens if there is no base condition in recursion?")}
-            className="text-[11px] px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.07] transition-colors"
+            className="text-[11px] px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.07] transition-colors shrink-0 whitespace-nowrap"
           >
             &ldquo;Missing base condition error&rdquo;
           </button>
           <button
             type="button"
             onClick={() => handleSelectSampleQuery("Inorder traversal ka order kya hota hai?")}
-            className="text-[11px] px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.07] transition-colors"
+            className="text-[11px] px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.07] transition-colors shrink-0 whitespace-nowrap"
           >
             &ldquo;Inorder traversal rule&rdquo;
           </button>
         </div>
 
-        <div className="flex items-center gap-1.5 text-[11px] text-white/50 font-mono">
+        <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-white/50 font-mono shrink-0">
           <Sparkles className="size-3 text-white" />
-          <span>Auto-detects Hindi, Tamil, Telugu & any Indic speech</span>
+          <span>Auto-detects Indic speech</span>
         </div>
       </div>
 

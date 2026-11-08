@@ -39,8 +39,8 @@ export const LectureChapters: React.FC<LectureChaptersProps> = ({
         </span>
       </div>
 
-      {/* Chapters Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+      {/* Chapters Horizontal Scrollable on Mobile, Grid on Desktop */}
+      <div className="flex overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
         {chapters.map((ch) => {
           const isActive = currentTime >= ch.start_time && currentTime <= ch.end_time;
           const chapterDuration = ch.end_time - ch.start_time;
@@ -55,7 +55,7 @@ export const LectureChapters: React.FC<LectureChaptersProps> = ({
               key={ch.chapter_number}
               type="button"
               onClick={() => onJumpToChapter(ch.start_time, ch.end_time)}
-              className={`btn-press group relative text-left p-3 rounded-xl border transition-all overflow-hidden ${
+              className={`btn-press group relative text-left p-3 rounded-xl border transition-all overflow-hidden w-64 sm:w-auto shrink-0 sm:shrink ${
                 isActive
                   ? 'bg-white/[0.12] border-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.5)]'
                   : 'bg-white/[0.025] border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.14]'

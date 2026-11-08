@@ -1,4 +1,5 @@
 import { Lecture, SearchResponse, VoiceSearchResponse, ConfigStatus, BenchmarkReport, SupportedLanguage, SUPPORTED_LANGUAGES, GnaniModel, EvonReasoningResponse } from '@/types';
+import { DEFAULT_DEMO_LECTURE, localSearchInDemoLecture } from '@/lib/demoLectureData';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -30,19 +31,37 @@ export async function fetchLanguages(): Promise<{ count: number; languages: Supp
 export async function fetchLectures(): Promise<Lecture[]> {
   try {
     const res = await fetch(`${API_BASE}/api/lectures`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data: Lecture[] = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        // Ensure default reference demo lecture is always accessible even if backend database was reset
+        const hasDemo = data.some((l) => l.id === DEFAULT_DEMO_LECTURE.id);
+        if (!hasDemo) {
+          return [DEFAULT_DEMO_LECTURE, ...data];
+        }
+        return data;
+      }
+    }
   } catch {
-    // fallback if backend is offline during build
+    // fallback if backend is offline or waking up
   }
-  return [];
+  return [DEFAULT_DEMO_LECTURE];
 }
 
 export async function fetchLectureDetail(id: string): Promise<Lecture | null> {
   try {
     const res = await fetch(`${API_BASE}/api/lectures/${id}`);
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const detail = await res.json();
+      if (detail && detail.segments && detail.segments.length > 0) {
+        return detail;
+      }
+    }
   } catch {
-    // fallback if backend is offline during build
+    // fallback if backend is offline or waking up
+  }
+  if (id === DEFAULT_DEMO_LECTURE.id) {
+    return DEFAULT_DEMO_LECTURE;
   }
   return null;
 }
@@ -102,24 +121,33 @@ export async function searchByText(
   followUp?: boolean,
   languageCode: string = 'indic-auto'
 ): Promise<SearchResponse> {
-  const res = await fetch(`${API_BASE}/api/search/text`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query,
-      lecture_id: lectureId || null,
-      limit: 3,
-      context_timestamp: contextTimestamp || null,
-      follow_up: Boolean(followUp),
-      language_code: languageCode || 'indic-auto',
-    }),
-  });
+  try {
+    const res = await fetch(`${API_BASE}/api/search/text`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query,
+        lecture_id: lectureId || null,
+        limit: 3,
+        context_timestamp: contextTimestamp || null,
+        follow_up: Boolean(followUp),
+        language_code: languageCode || 'indic-auto',
+      }),
+    });
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || 'Search failed');
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch {
+    // Backend offline or unreachable from mobile client
   }
-  return res.json();
+
+  // Graceful client fallback for reference demo lecture
+  if (!lectureId || lectureId === DEFAULT_DEMO_LECTURE.id) {
+    return localSearchInDemoLecture(query);
+  }
+
+  throw new Error('Search failed: backend server is currently unreachable.');
 }
 
 export async function searchByVoice(
@@ -173,7 +201,11 @@ export function formatTime(seconds: number): string {
 }
 
 export function getAudioStreamUrl(urlOrFilename: string): string {
+  if (!urlOrFilename) return '/demo/dsa_recursion_trees_lecture.wav';
   if (urlOrFilename.startsWith('http')) return urlOrFilename;
+  if (urlOrFilename.includes('dsa_recursion_trees_lecture.wav') || urlOrFilename === DEFAULT_DEMO_LECTURE.filename) {
+    return '/demo/dsa_recursion_trees_lecture.wav';
+  }
   if (urlOrFilename.startsWith('/api/audio/')) return `${API_BASE}${urlOrFilename}`;
   return `${API_BASE}/api/audio/${urlOrFilename}`;
 }

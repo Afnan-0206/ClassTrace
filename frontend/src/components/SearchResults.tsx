@@ -164,8 +164,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               } ${isActive ? 'ring-2 ring-white' : ''}`}
             >
               {/* Card Header: Rank, Match %, Timestamps, Quick Play */}
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   <span
                     className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                       isRank1
@@ -186,7 +186,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
                   {/* Bookmark Button */}
                   {onToggleBookmark && (
                     <button

@@ -11,6 +11,7 @@ import {
   X,
   Keyboard,
   Settings2,
+  MoreVertical,
 } from 'lucide-react';
 import { ConfigStatus } from '@/types';
 import { ClassTraceLogo } from '@/components/ClassTraceLogo';
@@ -109,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onOpenAdjustGlass}
               title="Adjust crystal glass appearance"
               aria-expanded={isGlassOpen}
-              className={`btn-press h-8 flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-medium border transition-colors shadow-sm ${
+              className={`btn-press h-8 hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-medium border transition-colors shadow-sm shrink-0 ${
                 isGlassOpen
                   ? 'bg-white/20 text-white border-white/50 shadow-white/10'
                   : 'text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border-white/[0.1] hover:border-white/[0.2]'
@@ -126,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={onOpenShortcuts}
               title="Keyboard shortcuts"
-              className="btn-press h-8 hidden lg:flex items-center justify-center p-2 rounded-lg text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.1] transition-colors"
+              className="btn-press h-8 hidden lg:flex items-center justify-center p-2 rounded-lg text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.1] transition-colors shrink-0"
             >
               <Keyboard className="size-3.5" />
             </button>
@@ -137,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onOpenUpload}
             title="Upload audio recording (.wav, .mp3, .m4a)"
-            className="btn-press h-8 flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.1] hover:border-white/[0.2] transition-colors shadow-sm"
+            className="btn-press h-8 hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.1] hover:border-white/[0.2] transition-colors shadow-sm shrink-0"
           >
             <UploadCloud className="size-3.5 text-slate-400" />
             <span className="hidden md:inline">Upload</span>
@@ -149,27 +150,41 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={onOpenLiveRecord}
               title="Record live class"
-              className="btn-press h-8 flex items-center gap-1.5 px-3 rounded-lg text-xs font-semibold text-rose-200 bg-rose-950/70 hover:bg-rose-900 border border-rose-800/80 transition-colors shadow-sm"
+              className="btn-press h-8 flex items-center gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-semibold text-rose-200 bg-rose-950/70 hover:bg-rose-900 border border-rose-800/80 transition-colors shadow-sm shrink-0"
             >
               <Radio className="size-3 text-rose-400 animate-pulse" />
-              <span>Record Class</span>
+              <span>Record<span className="hidden sm:inline"> Class</span></span>
             </button>
           )}
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile More Options Toggle */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="sm:hidden p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/[0.08] transition-colors"
+            title="More options"
+            aria-label="More options"
+            className="sm:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.08] transition-colors shrink-0"
           >
-            {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            {mobileMenuOpen ? <X className="size-4" /> : <MoreVertical className="size-4" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="sm:hidden p-3 border-t border-white/[0.08] bg-black/90 backdrop-blur-3xl grid grid-cols-2 gap-2 animate-in fade-in duration-150">
+        <div className="sm:hidden p-3 border-t border-white/[0.08] bg-black/95 backdrop-blur-3xl grid grid-cols-2 gap-2 animate-in fade-in duration-150">
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenUpload();
+            }}
+            className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs text-white"
+          >
+            <UploadCloud className="size-3.5 text-slate-300" />
+            <span>Upload Audio</span>
+          </button>
+
           <button
             type="button"
             onClick={() => {
@@ -182,17 +197,33 @@ export const Header: React.FC<HeaderProps> = ({
             <span>Benchmark</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onOpenStudyKit();
-            }}
-            className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs text-white"
-          >
-            <Bookmark className="size-3.5 text-white" />
-            <span>Study Kit ({bookmarkCount})</span>
-          </button>
+          {onOpenAdjustGlass && (
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAdjustGlass();
+              }}
+              className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs text-white"
+            >
+              <Settings2 className="size-3.5 text-white" />
+              <span>Glass Theme</span>
+            </button>
+          )}
+
+          {onOpenShortcuts && (
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenShortcuts();
+              }}
+              className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs text-white"
+            >
+              <Keyboard className="size-3.5 text-white" />
+              <span>Shortcuts</span>
+            </button>
+          )}
         </div>
       )}
     </header>

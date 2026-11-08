@@ -137,7 +137,7 @@ export function ImageStreamHero({
       {...props}
       style={{ containerType: "inline-size", ...props.style }}
     >
-      <style>{css}</style>
+      <style dangerouslySetInnerHTML={{ __html: css }} />
 
       <div
         aria-hidden

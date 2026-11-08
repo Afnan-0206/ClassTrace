@@ -589,7 +589,7 @@ export default function HalftoneWordmarkFooter({
         } as React.CSSProperties
       }
     >
-      <style>{HWF_CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: HWF_CSS }} />
       <canvas ref={canvasRef} aria-hidden="true" />
       <span className="hwf-sr">{wordmark}</span>
       <div className="hwf-top">
